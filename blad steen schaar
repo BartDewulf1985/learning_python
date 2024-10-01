@@ -1,0 +1,100 @@
+import random
+
+lijst = ['blad', 'steen', 'schaar']
+spelerscore = 0
+pcscore = 0
+
+
+while (spelerscore < 3) and (pcscore < 3) :
+
+	
+	winner = 'niemand'
+	intuser = -1
+
+	while (intuser < 0) :
+		
+		user = input('Geef je keuze in : ')
+		
+		if user in lijst :
+			intuser = lijst.index(user)
+
+		else :
+
+			pass	
+
+
+	intpc = random.randint(0,2)
+
+
+	if intuser == 0:  #speler kiest blad
+
+		if intpc == 0: #pc kiest blad
+
+				pass
+
+		elif intpc == 1: #pc kiest steen
+
+				winner = 'speler'
+
+		else : ##pc kiest schaar
+
+				winner = 'pc'
+
+
+	if intuser == 1:  #speler kiest steen
+
+		if intpc == 0: #pc kiest blad
+
+				winner = 'pc'
+
+		elif intpc == 1: #pc kiest steen
+
+				pass
+
+		else : ##pc kiest schaar
+
+				winner = 'speler'
+
+	if intuser == 2:  #speler kiest schaar
+
+		if intpc == 0: #pc kiest blad
+
+				winner = 'speler'
+
+		elif intpc == 1: #pc kiest steen
+
+				winner = 'pc'
+
+		else : ##pc kiest schaar
+
+				pass
+
+
+	if winner == 'speler' :
+
+		spelerscore = spelerscore +1
+
+	if winner == 'pc' :
+	
+		pcscore = pcscore +1
+
+	
+
+	print('\n')
+	print('Je speelde', lijst[intuser])
+	print('Ik speelde', lijst[intpc])
+	print(winner, 'wint!')
+	print('De score is', spelerscore, '-', pcscore)
+	print('\n')
+
+if spelerscore == 3:
+	print('Je wint het spel!')
+
+if pcscore == 3:
+	print('Ik win het spel!')
+
+
+	
+
+
+
