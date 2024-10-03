@@ -1,0 +1,112 @@
+import os
+from os import path
+import shutil
+import random
+
+
+#verander cwd naar temp
+parentDir = 'C:/Users/Bart/Desktop'
+os.chdir(parentDir)
+os.mkdir('Temp')
+tempDir = 'C:/Users/Bart/Desktop/Temp'
+os.chdir('./Temp')
+
+#declareer totaal
+totaal = 0
+
+#while lus voor het aanmaken van de mappen
+for index in range (0,11) :
+
+    #maak variabele namen
+    mapnaam = 'Getal'+str(index)
+    bestandsnaam = 'Getal'+str(index)
+    inhoud = random.randrange(0,1001)
+
+    #maak een folder aan en open het
+    os.mkdir(mapnaam)
+    os.chdir(f'./{mapnaam}')
+
+    #maak een bestand aan
+    with open (f'{bestandsnaam}.txt', 'x') :
+        pass
+
+    #vul het bestand met een willekeurig getal tussen 1-1000
+    with open (f'{bestandsnaam}.txt', 'w') as currentfile :
+        currentfile.write(f'{inhoud}')
+        
+    #ga terug naar de temp directory
+    os.chdir(tempDir)
+
+#whilelus voor het uitlezen van de getallen
+for index in range (0,11) :
+  
+    #maak variabele namen
+    mapnaam = 'Getal'+str(index)
+    bestandsnaam = 'Getal'+str(index)
+
+    #open de map
+    os.chdir(f'./{mapnaam}')
+
+    #lees het bestand uit
+    with open (f'{bestandsnaam}.txt', 'r') as inhoud :
+        inhoudInt = int(inhoud.read())
+
+    #voeg het toe aan het totaal
+    totaal = totaal + inhoudInt
+
+    #ga terug naar de temp directory
+    os.chdir(tempDir)
+
+#for lus voor het verwijderen van de bestanden
+os.chdir(tempDir)
+index = 0
+for index in range (0,11) :
+  
+    #maak variabele namen
+    mapnaam = 'Getal'+str(index)
+    bestandsnaam = 'Getal'+str(index)
+
+    #open de map
+    os.chdir(f'./{mapnaam}')
+
+    #verwijder het bestand
+    os.remove (f'{bestandsnaam}.txt')   
+
+    #ga terug een map naar boven
+    os.chdir('..')
+
+    #verwijder de map
+    os.rmdir((f'./{mapnaam}'))    
+
+#verwijder de map temp
+os.chdir(parentDir)
+os.rmdir('Temp')
+
+
+#bereken of de som hoger of lager dan 5000 is
+if totaal <= 5000 :
+    solution = 'LAGER'
+
+else :
+    solution = 'HOGER'
+
+#vraag de speler wat hij of zij denkt
+attempt = input('Kies uit lager of hoger : ')
+attempt = attempt.upper()
+
+#bereken uitkomst
+if attempt == solution :
+    resultaat = 'Correct!'
+
+else :
+    resultaat = 'Fout!'
+
+
+#geef mee of het juist is of niet
+print('Het getal was', totaal)
+print('Jij koos voor', attempt)
+print('Het antwoord was', solution)
+print('Je poging was', resultaat)
+
+
+
