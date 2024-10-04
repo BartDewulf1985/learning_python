@@ -1,0 +1,145 @@
+import os
+from os import path
+import shutil
+import csv
+
+# definieer parentfolder
+parentfolder = os.getcwd()
+
+# maak een map studentenaan
+os.mkdir('STUDENTS')
+
+# open en definieer STUDENTS als studentsDir
+os.chdir ('./STUDENTS')
+studentsDir = os.getcwd()
+
+# maak een csv bestand aan
+with (open ('studenten.csv', 'x')) :
+    pass
+
+# vul het csv bestand aan met volgende data
+
+header = ["Voornaam", "Familienaam", "U-nummer", "Richting"]
+studenten = [
+ ["Guido", "van Rossum", "u0465", "SD"],
+ ["Steve", "Jobs", "u0145", "SD"],
+ ["John", "von Neumann", "u0421", "CYB"],
+ ["Bill", "Gates", "u0260", "SD"],
+ ["Linus", "Torvalds", "u0912", "SD"],
+ ["Sundar", "Pichai", "u0123", "AI"],
+ ["Larry", "Page", "u0456", "AI"],
+ ["Robin", "Li", "u0613", "BIT"],
+ ["Grace", "Hopper", "u0435", "SD"],
+ ["Jeffrey", "Bezos", "u0885", "BIT"],
+ ["Alan", "Turing", "u0102", "AI"],
+ ["Mark", "Zuckerberg", "u0542", "CYB"],
+ ["Charles", "Robins", "u0648", "CYB"],
+ ["Adele", "Goldberg", "u0893", "SD"],
+ ["Lawrence", "Ellison", "u0247", "BIT"],
+ ["Ada", "Lovelace", "u0111", "AI"],
+ ["George", "Boole", "u0234", "BIT"],
+ ["Donald", "Trump", "u0478", "USA"]
+ ]
+
+with (open ('studenten.csv', 'w', newline = '')) as studentenlijst :
+
+    csvWriter = csv.writer(studentenlijst, delimiter = ';')
+    
+    csvWriter.writerow(header)
+
+    for line in studenten :
+        csvWriter.writerow(line)
+
+# einddoel = .\Python\submap vak\submap nummer\submap naam
+# bijvoorbeeld:     .\Python\AI_BIT\even\alan_turing\
+
+# maak alle submappen vak en nummer aan
+os.chdir(studentsDir)
+foldersVakken = ['AI_BIT', 'CYB_SD' ,'UNKNOWN']
+foldersNummers = ['EVEN', 'ONEVEN']
+
+for folder in foldersVakken :
+    os.mkdir(folder)
+    os.chdir(folder)
+
+    for folder in foldersNummers :
+        os.mkdir(folder)
+
+    os.chdir(studentsDir)
+
+# itereer over elke lijn binnen de csv
+with open ('studenten.csv', 'r', newline = '') as studentenlijst :
+    csvReader = csv.reader(studentenlijst, delimiter = ';')
+    csvReader.__next__()
+    for row in csvReader :
+        voornaam = row[0]
+        familienaam = row[1]
+        unummer = int((row[2].replace('u', ''))) 
+        richting = row[3]
+    
+## toewijzing submap vak
+
+### haal kolom 4 op
+        
+        ## if functie obv de inhoud van kolom 4
+        if richting == 'AI' or richting == 'BIT' :
+            folderVakNaam = 'AI_BIT'
+        elif richting == 'CYB' or richting == 'SD' :
+            folderVakNaam = 'CYB_SD' 
+        else : folderVakNaam = 'UNKNOWN'
+
+        ## open de correcte map
+
+        os.chdir(studentsDir)
+        os.chdir (f'./{folderVakNaam}')
+
+
+    ## toewijzing submap nummer
+
+        ### haal kolom 3 op
+
+
+        ## if functie obv de inhoud van kolom 3
+        
+        if unummer%2 != 0 :
+            folderNummerNaam = 'ONEVEN'
+
+        else : folderNummerNaam = 'EVEN'                
+        
+        ## open de correcte map
+        os.chdir (f'./{folderNummerNaam}')
+
+        ## aanmaak map obv naam
+        folderNaamNaam = voornaam+'_'+familienaam
+        os.mkdir (folderNaamNaam)
+
+        ## open de map obv naam
+        os.chdir(folderNaamNaam)
+ 
+    ## toevoegen html
+
+        ### maak het bestand aan
+        with open ('index.html', 'x') :
+            pass
+
+        ### genereer de tekst
+        tekst = (f'<p>Beste {voornaam} {familienaam}<br>Welkom in de cursus Python!</p>')
+
+        ### vul de html met de tekst
+        with open ('index.html' , 'w') as webPagina:
+            webPagina.write(tekst)
+
+    ## keer terug naar de temp folder
+        os.chdir(studentsDir)
+
+##  comprimeer de inhoud van Temp naar "python_cursus.zip
+    shutil.make_archive(f'{parentfolder}/studenten', 'zip', studentsDir, )
+
+##  check de zip file
+
+##  verwijder de inhoud van temp        $
+shutil.rmtree (studentsDir)
+
+
+
+
